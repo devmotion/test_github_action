@@ -19,12 +19,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Debug
-        run: echo ${{ fromJson(steps.get_failed_check_run.outputs.data) }}
+        run: echo ${{ steps.get_failed_check_run.outputs.data }}
       - name: Post message on Slack
         uses: pullreminders/slack-action@master
         with:
           args: '{
-                    "channel": "C01FV394HNU",
+                    "channel": "${{ secrets.SLACK_CHANNEL }}",
                     "text": "Check suite on ${{ github.event.check_suite.head_branch }} not successful",
                     "attachments": [{
                         "color": "#FF0000",
