@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Obtain failed CI run
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.x
         id: get_failed_check_run
         with:
           route: GET /repos/${{ github.repository }}/check-suites/${{ github.event.check_suite.id }}/check-runs?status=completed
