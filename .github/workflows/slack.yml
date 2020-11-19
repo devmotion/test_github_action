@@ -18,12 +18,12 @@ jobs:
           mediaType: '{"previews": ["antiope"]}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Debug
-        run: echo ${{ steps.get_failed_check_run.outputs.data }}
       - name: Post message on Slack
-        uses: pullreminders/slack-action@master
-        with:
-          args: '{
+        run: |
+          curl -X POST -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" -H "Content-type: application/json" --data ${{ env.DATA }} https://slack.com/api/chat.postMessage
+        env:
+          CHECK_RUN_URL: ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}
+          DATA: {
                     "channel": "${{ secrets.SLACK_CHANNEL }}",
                     "text": "Check suite on ${{ github.event.check_suite.head_branch }} not successful",
                     "attachments": [{
@@ -32,17 +32,14 @@ jobs:
                         "fields": [
                             {
                                 "title": "Branch",
-                                "value": ${{ github.event.check_suite.head_branch }},
+                                "value": "${{ github.event.check_suite.head_branch }}",
                                 "short": true
                             },
 				                    {
 	          				            "title": "Conclusion",
-					                      "value": ${{ github.event.check_suite.conclusion }},
+					                      "value": "${{ github.event.check_suite.conclusion }}",
 					                      "short": true
 				                    }
                         ]
                     }]
-                }'
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          CHECK_RUN_URL: ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}
+                }
