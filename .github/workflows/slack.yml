@@ -27,5 +27,5 @@ jobs:
           CHECK_RUN_URL: ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}
           DATA: '{
                     "channel": "${{ secrets.SLACK_CHANNEL }}",
-                    "text": "Check run ${{ env.CHECK_RUN_NAME }} was not successful.\n<${{ env.CHECK_RUN_URL }}|Visit job>"
+                    "text": "Check run ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].name }} was not successful.\n<${{ ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}|Visit job>"
                  }'
