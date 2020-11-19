@@ -20,7 +20,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Post message on Slack
         run: |
-          curl -X POST -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" -H "Content-type: application/json" --data ${{ env.DATA }} https://slack.com/api/chat.postMessage
+          curl -X POST -H 'Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}' -H 'Content-type: application/json' --data '${{ env.DATA }}' https://slack.com/api/chat.postMessage
         env:
           DATA: '{
                     "channel": "${{ secrets.SLACK_CHANNEL }}",
