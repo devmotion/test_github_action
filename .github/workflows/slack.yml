@@ -2,7 +2,7 @@ name: Slack message
 
 on:
   check_suite:
-    type: ['completed']
+    types: ['completed']
 
 jobs:
   message:
