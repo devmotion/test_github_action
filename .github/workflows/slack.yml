@@ -27,9 +27,21 @@ jobs:
           CHECK_RUN_URL: ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}
           DATA: '{
                     "channel": "${{ secrets.SLACK_CHANNEL }}",
-                    "text": "Check run ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].name }} was not successful.\n<${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}|Visit job>",
+                    "text": "Check run ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].name }} was not successful.\n<${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}|Visit run>",
                     "attachments": [{
                         "text": "Check run ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].name }} was not successful.",
-                        "color": "#FF0000"
+                        "color": "#FF0000",
+                        "fields": [
+                            {
+                                "title": "Repository",
+                                "value": "${{ github.repository }}",
+                                "short": true
+                            },
+                            {
+                                "title": "Run",
+                                "value": "${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].id }}",
+                                "short": true
+                            }
+                        ]
                     }]
                  }'
