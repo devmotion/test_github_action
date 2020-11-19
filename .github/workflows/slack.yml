@@ -1,0 +1,47 @@
+name: Slack message
+
+on:
+  check_suite:
+    type: ['completed']
+
+jobs:
+  message:
+    name: After CI failure
+    # if: github.event.check_suite.conclusion != 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtain failed CI run
+        uses: octokit/request-action@v2
+        id: get_failed_check_run
+        with:
+          route: GET /repos/${{ github.repository }}/check-suites/${{ github.event.check_suite.id }}/check-runs?status=completed
+          mediaType: '{"previews": ["antiope"]}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Post message on Slack
+        uses: pullreminders/slack-action@master
+        with:
+          args: '{
+                    "channel": "C01FV394HNU",
+                    "text": "Check suite on ${{ github.event.check_suite.head_branch }} not successful",
+                    "attachments": [{
+                        "color": "#FF0000",
+                        "text": ":red_circle: Check suite not successful!",
+                        "fields": [
+                                  {
+                     "title": "Branch",
+                      "value": ${{ github.event.check_suite.head_branch }},
+                      "short": true
+                      },
+				              {
+					            "title": "Conclusion",
+					            "value": ${{ github.event.check_suite.conclusion }},
+					            "short": true
+				              }
+                      ],
+                }
+                ]
+                }'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          CHECK_RUN_URL: ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}
