@@ -1,0 +1,4 @@
+container:
+  image: alpine:latest
+task:
+  tests_script: exit 1
