@@ -23,23 +23,23 @@ jobs:
           curl -X POST -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" -H "Content-type: application/json" --data ${{ env.DATA }} https://slack.com/api/chat.postMessage
         env:
           CHECK_RUN_URL: ${{ fromJson(steps.get_failed_check_run.outputs.data).check_runs[0].html_url }}
-          DATA: {
-                    "channel": "${{ secrets.SLACK_CHANNEL }}",
-                    "text": "Check suite on ${{ github.event.check_suite.head_branch }} not successful",
-                    "attachments": [{
-                        "color": "#FF0000",
-                        "text": ":red_circle: Check suite not successful!",
-                        "fields": [
+          DATA: "{
+                    \"channel\": \"${{ secrets.SLACK_CHANNEL }}\",
+                    \"text\": \"Check suite on ${{ github.event.check_suite.head_branch }} not successful\",
+                    \"attachments\": [{
+                        \"color\": \"#FF0000\",
+                        \"text\": ":red_circle: Check suite not successful!\",
+                        \"fields\": [
                             {
-                                "title": "Branch",
-                                "value": "${{ github.event.check_suite.head_branch }}",
-                                "short": true
+                                \"title\": \"Branch\",
+                                \"value\": \"${{ github.event.check_suite.head_branch }}\",
+                                \"short\": true
                             },
 				                    {
-	          				            "title": "Conclusion",
-					                      "value": "${{ github.event.check_suite.conclusion }}",
-					                      "short": true
+	          				            \"title\": \"Conclusion\",
+					                      \"value\": \"${{ github.event.check_suite.conclusion }}\",
+					                      \"short\": true
 				                    }
                         ]
                     }]
-                }
+                }"
