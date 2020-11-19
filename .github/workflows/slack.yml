@@ -18,6 +18,8 @@ jobs:
           mediaType: '{"previews": ["antiope"]}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Debug
+        run: echo ${{ fromJson(steps.get_failed_check_run.outputs.data) }}
       - name: Post message on Slack
         uses: pullreminders/slack-action@master
         with:
@@ -28,19 +30,18 @@ jobs:
                         "color": "#FF0000",
                         "text": ":red_circle: Check suite not successful!",
                         "fields": [
-                                  {
-                     "title": "Branch",
-                      "value": ${{ github.event.check_suite.head_branch }},
-                      "short": true
-                      },
-				              {
-					            "title": "Conclusion",
-					            "value": ${{ github.event.check_suite.conclusion }},
-					            "short": true
-				              }
-                      ],
-                }
-                ]
+                            {
+                                "title": "Branch",
+                                "value": ${{ github.event.check_suite.head_branch }},
+                                "short": true
+                            },
+				                    {
+	          				            "title": "Conclusion",
+					                      "value": ${{ github.event.check_suite.conclusion }},
+					                      "short": true
+				                    }
+                        ]
+                    }]
                 }'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
