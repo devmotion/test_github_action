@@ -48,4 +48,4 @@ jobs:
           CI_BRANCH: ${{ github.event.workflow_run.head_branch }}
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          reviewdog -name="Julia Formatter" -f=diff -f.diff.strip=1 -reporter="github-pr-review" -guess < ./diff.txt
+          reviewdog -name="Julia Formatter" -f=diff -f.diff.strip=1 -reporter="github-pr-review" -tee -guess < ./diff.txt
