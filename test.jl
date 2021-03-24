@@ -1,1 +1,2 @@
-test(x) = print("hello")
+test(x) = print(
+  "hello")
