@@ -29,5 +29,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: ${{ failure() && github.event_name == 'pull_request' }}
         with:
-          name: diff-${{ github.event.number }}
+          name: diff
           path: diff.txt
