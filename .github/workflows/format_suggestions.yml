@@ -3,7 +3,8 @@ name: Suggest formatting
 on:
   workflow_run:
     workflows: ["Format check"]
-    types: [completed]
+    types:
+      - completed
 
 jobs:
   suggest:
