@@ -52,7 +52,6 @@ jobs:
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }}
           CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }}
           CI_REPO_NAME: ${{ github.event.workflow_run.repository.name }}
-          CI_REPOSITORY: ${{ github.event.workflow_run.repository }}
           CI_BRANCH: ${{ github.event.workflow_run.head_branch }}
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
