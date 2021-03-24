@@ -10,9 +10,7 @@ jobs:
   suggest:
     name: Suggest formatting
     runs-on: ubuntu-latest
-    if: >
-      ${{ github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'failure' }}
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - name: Download artifact
         uses: actions/github-script@v3
@@ -39,7 +37,7 @@ jobs:
             fs.writeFileSync('${{github.workspace}}/diff.zip', Buffer.from(download.data));
             // return the number of the underlying PR encoded in the name of the artifact
             // PRs from forks are not listed under github.event.workflow_run.pull_requests
-            var pr = matchArtifact.name.substring(5));
+            var pr = matchArtifact.name.substring(5);
             return pr
           result-encoding: string
       - name: Extract artifact
