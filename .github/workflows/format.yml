@@ -1,10 +1,13 @@
-name: Format check
+name: Format suggestions
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
+  pull_request_target:
+  
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
   format:
@@ -17,17 +20,7 @@ jobs:
       - run: |
           julia  -e 'using Pkg; Pkg.add("JuliaFormatter")'
           julia  -e 'using JuliaFormatter; format("."; verbose=true)'
-      - run: |
-          git diff > diff.txt
-          if [ -s diff.txt ]; then
-            echo 'code is not formatted correctly'
-            exit 1
-          else
-            echo 'code is formatted correctly!'
-            exit 0
-          fi
-      - uses: actions/upload-artifact@v2
-        if: ${{ failure() && github.event_name == 'pull_request' }}
+      - uses: reviewdog/action-suggester@v1
         with:
-          name: diff
-          path: diff.txt
+          tool_name: JuliaFormatter
+          fail_on_error: true
